@@ -77,7 +77,7 @@ public class ECGWallpaperService extends WallpaperService {
         private boolean mSurfaceAvailable = false;
         private Paint mTextPaint;
         private long mTime;
-        private int mWaveColor = R.attr.color;
+        private int mWaveColor = R.color.colorGreen;
         private WaveType mWaveType;
         private final Paint pathPaint;
         private int screenHeight;
@@ -95,7 +95,7 @@ public class ECGWallpaperService extends WallpaperService {
         ECGEngine()
                 throws IOException {
             super();
-            PreferenceManager.setDefaultValues(ECGWallpaperService.this.getApplicationContext(), R.layout.prefs, false);
+            PreferenceManager.setDefaultValues(ECGWallpaperService.this.getApplicationContext(), R.xml.prefs, false);
             this.mPrefs = ECGWallpaperService.this.getSharedPreferences("prefs", 0);
             this.mPrefs.registerOnSharedPreferenceChangeListener(this);
             onSharedPreferenceChanged(this.mPrefs, null);
@@ -249,8 +249,6 @@ public class ECGWallpaperService extends WallpaperService {
                 this.mCanvas = this.surfaceHolder.lockCanvas();
                 if (this.mCanvas != null)
                     draw();
-                if (this.mCanvas != null)
-                    this.surfaceHolder.unlockCanvasAndPost(this.mCanvas);
                 if (isVisible())
                     this.mScheduledExecutorService.schedule(this.ecgProcess, 1000L / (15L * wSpeed()), TimeUnit.MILLISECONDS);
             } finally {
@@ -276,19 +274,19 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private int getNSColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.ns_wave_color), -16711936);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.ns_wave_color), R.color.colorPrimary);
         }
 
         private int getSVTColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.svt_wave_color), -16711936);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.svt_wave_color), R.color.colorPrimary);
         }
 
         private int getVFIBColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vfib_wave_color), -16711936);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vfib_wave_color), R.color.colorPrimary);
         }
 
         private int getVTColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vt_wave_color), -16711936);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vt_wave_color), R.color.colorPrimary);
         }
 
         private void initLineObject() {
@@ -400,7 +398,7 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private int strokeWidth() {
-            return Integer.parseInt(this.mPrefs.getString(ECGWallpaperService.this.getString(R.string.ecg_line_width_default), ECGWallpaperService.this.getString(R.string.ecg_line_width)));
+            return Integer.parseInt(this.mPrefs.getString(ECGWallpaperService.this.getString(R.string.ecg_line_width), ECGWallpaperService.this.getString(R.string.ecg_line_width_default)));
         }
 
         private void translateGradient() {

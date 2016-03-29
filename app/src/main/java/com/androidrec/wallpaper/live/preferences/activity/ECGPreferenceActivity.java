@@ -12,6 +12,6 @@ public class ECGPreferenceActivity extends PreferenceActivity
   {
     super.onCreate(paramBundle);
     getPreferenceManager().setSharedPreferencesName("prefs");
-    addPreferencesFromResource(R.layout.prefs);
+    addPreferencesFromResource(R.xml.prefs);
   }
 }

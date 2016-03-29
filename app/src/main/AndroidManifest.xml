@@ -8,7 +8,8 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_ecg"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:debuggable="true">
         <service
             android:name="com.androidrec.wallpaper.live.service.ECGWallpaperService"
             android:enabled="true"
