@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vt_battery_default">15</string>
+    <string name="vfib_battery_default">10</string>
+    <string name="asy_battery_default">5</string>
+    <string name="app_name">EMS Live Wallpaper</string>
+    <string name="wallpaper_description">Live EMS/ECG wallpaper to monitor battery life.</string>
+    <string name="ecg_xscale">ecg_xscale</string>
+    <string name="ecg_xscale_title">X-Axis scale</string>
+    <string name="ecg_xscale_summary">Set the amount of scaling along the X axis on the waveform.</string>
+    <string name="ecg_xscale_default">2</string>
+    <string name="ecg_yscale">ecg_yscale</string>
+    <string name="ecg_yscale_title">Y-Axis scale</string>
+    <string name="ecg_yscale_summary">Set the amount of scaling along the Y axis on the waveform.</string>
+    <string name="ecg_yscale_default">2</string>
+    <string name="ecg_speed">ecg_speed</string>
+    <string name="ecg_speed_title">Speed</string>
+    <string name="ecg_speed_summary">The speed of the waveform.</string>
+    <string name="ecg_speed_default">2</string>
+    <string name="ecg_line_width">ecg_line_width</string>
+    <string name="ecg_line_width_title">Line width</string>
+    <string name="ecg_line_width_summary">The line width of the waveform.</string>
+    <string name="ecg_line_width_default">1</string>
+    <string name="ecg_line_blur">ecg_line_blur</string>
+    <string name="ecg_line_blur_title">Blur radius</string>
+    <string name="ecg_line_blur_summary">Apply a blur effect to the waveform path drawn.</string>
+    <string name="ecg_line_blur_default">1</string>
+    <string name="ecg_display_heartbeat">ecg_display_heartbeat</string>
+    <string name="ecg_display_heartbeat_title">Enable heartbeat</string>
+    <string name="ecg_display_heartbeat_summary">Displays heartbeat of the phone depending on battery life and waveform being displayed.</string>
+    <string name="ecg_enable_grid">ecg_enable_grid</string>
+    <string name="ecg_enable_grid_title">Show grid</string>
+    <string name="ecg_enable_grid_summary">Show or hide the grid on the screen.</string>
+    <string name="ecg_enable_battery_level">ecg_enable_battery_level</string>
+    <string name="ecg_enable_battery_level_title">Show battery level</string>
+    <string name="ecg_enable_battery_level_summary">Show or hide the percentage of battery life left on the phone.</string>
+    <string name="ns_wave_color">ns_wave_color</string>
+    <string name="vt_battery_level">vt_battery_level</string>
+    <string name="vt_wave_color">vt_wave_color</string>
+    <string name="vfib_battery_level">vfib_battery_level</string>
+    <string name="vfib_wave_color">vfib_wave_color</string>
+    <string name="asy_battery_level">asy_battery_level</string>
+    <string name="asy_wave_color">asy_wave_color</string>
+    <string name="svt_wave_color">svt_wave_color</string>
+    <string name="battery_level_title">Battery level</string>
+    <string name="wave_color_title">Wave color</string>
+</resources>

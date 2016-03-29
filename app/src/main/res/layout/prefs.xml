@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Options for all waveforms">
+        <ListPreference android:persistent="true" android:entries="@array/ecg_xscale_names" android:title="@string/ecg_xscale_title" android:key="@string/ecg_xscale" android:summary="@string/ecg_xscale_summary" android:defaultValue="2" android:shouldDisableView="false" android:entryValues="@array/ecg_xscale_values" />
+        <ListPreference android:persistent="true" android:entries="@array/ecg_yscale_names" android:title="@string/ecg_yscale_title" android:key="@string/ecg_yscale" android:summary="@string/ecg_yscale_summary" android:defaultValue="2" android:shouldDisableView="false" android:entryValues="@array/ecg_yscale_values" />
+        <ListPreference android:persistent="true" android:entries="@array/ecg_speed_names" android:title="@string/ecg_speed_title" android:key="@string/ecg_speed" android:summary="@string/ecg_speed_summary" android:defaultValue="2" android:shouldDisableView="false" android:entryValues="@array/ecg_speed_values" />
+        <ListPreference android:persistent="true" android:entries="@array/ecg_line_width_names" android:title="@string/ecg_line_width_title" android:key="@string/ecg_line_width" android:summary="@string/ecg_line_width_summary" android:defaultValue="@string/ecg_line_width_default" android:shouldDisableView="false" android:entryValues="@array/ecg_line_width_values" />
+        <ListPreference android:persistent="true" android:entries="@array/ecg_line_blur_names" android:title="@string/ecg_line_blur_title" android:key="@string/ecg_line_blur" android:summary="@string/ecg_line_blur_summary" android:defaultValue="@string/ecg_line_blur_default" android:shouldDisableView="false" android:entryValues="@array/ecg_line_blur_values" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <CheckBoxPreference android:title="@string/ecg_enable_grid_title" android:key="@string/ecg_enable_grid" android:summary="@string/ecg_enable_grid_summary" android:defaultValue="true" />
+    <CheckBoxPreference android:title="@string/ecg_enable_battery_level_title" android:key="@string/ecg_enable_battery_level" android:summary="@string/ecg_enable_battery_level_summary" android:defaultValue="false" />
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Heartbeat settings">
+        <CheckBoxPreference android:persistent="true" android:title="@string/ecg_display_heartbeat_title" android:key="@string/ecg_display_heartbeat" android:summary="@string/ecg_display_heartbeat_summary" android:defaultValue="true" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Normal Sinus">
+        <com.androidrec.wallpaper.live.preferences.ColorPickerPreference android:title="@string/wave_color_title" android:key="@string/ns_wave_color" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Ventricular Tachycardia">
+        <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="50" android:title="@string/battery_level_title" android:key="@string/vt_battery_level" android:defaultValue="25" />
+        <com.androidrec.wallpaper.live.preferences.ColorPickerPreference android:title="@string/wave_color_title" android:key="@string/vt_wave_color" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Ventricular Fibrillation">
+        <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="25" android:title="@string/battery_level_title" android:key="@string/vfib_battery_level" android:defaultValue="15" />
+        <com.androidrec.wallpaper.live.preferences.ColorPickerPreference android:title="@string/wave_color_title" android:key="@string/vfib_wave_color" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Asystole">
+        <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="10" android:title="@string/battery_level_title" android:key="@string/asy_battery_level" android:defaultValue="5" />
+        <com.androidrec.wallpaper.live.preferences.ColorPickerPreference android:title="@string/wave_color_title" android:key="@string/asy_wave_color" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+    <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Supraventricular Tachycardia">
+        <com.androidrec.wallpaper.live.preferences.ColorPickerPreference android:title="@string/wave_color_title" android:key="@string/svt_wave_color" />
+    </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+</PreferenceScreen>

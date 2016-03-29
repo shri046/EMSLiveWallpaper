@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.androidrec.wallpaper.live"
+    android:installLocation="auto">
+
+    <uses-feature
+        android:name="android.software.live_wallpaper"
+        android:required="true" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_ecg"
+        android:label="@string/app_name">
+        <service
+            android:name="com.androidrec.wallpaper.live.service.ECGWallpaperService"
+            android:enabled="true"
+            android:label="EMS Live Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/ecgwallpaper" />
+        </service>
+        <activity
+            android:name="com.androidrec.wallpaper.live.preferences.activity.ECGPreferenceActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Black" />
+    </application>
+</manifest>

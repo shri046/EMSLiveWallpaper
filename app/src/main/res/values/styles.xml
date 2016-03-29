@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ECGStyle" parent="@android:style/Theme.Black">
+        <item name="android:colorForeground">#ffffffff</item>
+        <item name="android:colorBackground">#ff000000</item>
+    </style>
+</resources>
