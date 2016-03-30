@@ -15,22 +15,42 @@
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Heartbeat settings">
         <CheckBoxPreference android:persistent="true" android:title="@string/ecg_display_heartbeat_title" android:key="@string/ecg_display_heartbeat" android:summary="@string/ecg_display_heartbeat_summary" android:defaultValue="true" />
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Normal Sinus">
-        <com.androidrec.wallpaper.live.preferences.ARColorPickerPreference android:title="@string/wave_color_title" android:key="@string/ns_wave_color" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/wave_color_title"
+            android:key="@string/ns_wave_color"
+            android:defaultValue="@integer/COLOR_GREEN"/>
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Ventricular Tachycardia">
         <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="50" android:title="@string/battery_level_title" android:key="@string/vt_battery_level" android:defaultValue="25" />
-        <com.androidrec.wallpaper.live.preferences.ARColorPickerPreference android:title="@string/wave_color_title" android:key="@string/vt_wave_color" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/wave_color_title"
+            android:key="@string/vt_wave_color"
+            android:defaultValue="@integer/COLOR_GREEN"/>
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Ventricular Fibrillation">
         <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="25" android:title="@string/battery_level_title" android:key="@string/vfib_battery_level" android:defaultValue="15" />
-        <com.androidrec.wallpaper.live.preferences.ARColorPickerPreference android:title="@string/wave_color_title" android:key="@string/vfib_wave_color" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/wave_color_title"
+            android:key="@string/vfib_wave_color"
+            android:defaultValue="@integer/COLOR_GREEN"/>
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Asystole">
         <com.androidrec.wallpaper.live.preferences.SeekBarPreference android:max="10" android:title="@string/battery_level_title" android:key="@string/asy_battery_level" android:defaultValue="5" />
-        <com.androidrec.wallpaper.live.preferences.ARColorPickerPreference android:title="@string/wave_color_title" android:key="@string/asy_wave_color" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/wave_color_title"
+            android:key="@string/asy_wave_color"
+            android:defaultValue="@integer/COLOR_GREEN"/>
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
+
     <com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory android:title="Supraventricular Tachycardia">
-        <com.androidrec.wallpaper.live.preferences.ARColorPickerPreference android:title="@string/wave_color_title" android:key="@string/svt_wave_color" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:title="@string/wave_color_title"
+            android:key="@string/svt_wave_color"
+            android:defaultValue="@integer/COLOR_GREEN"/>
     </com.androidrec.wallpaper.live.preferences.category.ECGPreferenceCategory>
 </PreferenceScreen>

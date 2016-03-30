@@ -2,13 +2,12 @@ package com.androidrec.wallpaper.live.utils;
 
 import android.graphics.Path;
 
-import com.androidrec.wallpaper.live.waveforms.ECGWave;
 import com.androidrec.wallpaper.live.constants.WaveType;
 import com.androidrec.wallpaper.live.waveforms.ECGAsystole;
 import com.androidrec.wallpaper.live.waveforms.ECGNormalSinus;
 import com.androidrec.wallpaper.live.waveforms.ECGSuperVentricularTachycardia;
 import com.androidrec.wallpaper.live.waveforms.ECGVentricularFibrillation;
-import com.androidrec.wallpaper.live.waveforms.ECGVentricularTachycardia;
+import com.androidrec.wallpaper.live.waveforms.ECGWave;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +42,9 @@ public class LineObjects {
     }
 
     private void getCoordinates() {
-        this.waveformX = this.wave.getX(new ArrayList<Integer>(), numCycles(this.wave.getMax()), this.mXScale);
-        this.waveformY = this.wave.getY(new ArrayList<Integer>(), numCycles(this.wave.getMax()), this.mYScale);
+        this.waveformX = this.wave.getX(numCycles(this.wave.getMax()), this.mXScale);
+        this.waveformY = this.wave.getY(numCycles(this.wave.getMax()), this.mYScale);
+        this.numSamples = numCycles(this.waveformX.size()) * this.waveformX.size();
     }
 
     private void getNormalECG() {
@@ -83,28 +83,25 @@ public class LineObjects {
         if (paramInt1 == 0) {
             this.path.moveTo(this.xAxisLocation, this.yAxisLocation);
         }
-        while (true) {
-            if (paramInt1 < paramInt2) {
-                break;
-            }
-            if (paramInt2 == 0) {
-                this.lastPoint = this.xAxisLocation;
-                this.numSamples = this.waveformX.size();
-                return this.path;
-            }
-            float f1 = this.waveformX.get(paramInt1) + this.xAxisLocation;
-            float f2 = this.waveformY.get(paramInt1) + this.yAxisLocation;
-            this.path.moveTo(f1, f2);
+
+        if (paramInt2 == 0) {
+            this.lastPoint = this.xAxisLocation;
+        } else {
+            this.lastPoint = paramInt2;
+        }
+
+        this.numSamples = numCycles(this.waveformX.size()) * this.waveformX.size();
+        float f1 = this.waveformX.get(paramInt1) + this.xAxisLocation;
+        float f2 = this.waveformY.get(paramInt1) + this.yAxisLocation;
+        this.path.moveTo(f1, f2);
+
+        for(int i = 0; i < numCycles(this.waveformX.size()) * this.waveformX.size(); i++) {
             try {
-                int i = this.waveformX.get(paramInt1) + this.xAxisLocation;
-                int j = this.waveformY.get(paramInt1);
-                int k = this.yAxisLocation;
-                this.path.lineTo(i, j + k);
-                this.lastPoint = i;
-                paramInt1 += 1;
+                this.path.lineTo(this.waveformX.get(i) + this.xAxisLocation, this.waveformY.get(i) + this.yAxisLocation);
             } catch (Exception localException) {
             }
         }
+
         return this.path;
     }
 

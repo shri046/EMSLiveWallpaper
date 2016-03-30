@@ -148,9 +148,9 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void createGradient() {
-            this.mBoxPaint.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            this.mTextPaint.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            this.gradient = new LinearGradient(0.0F, this.screenHeight / 2, this.screenWidth / 3, this.screenHeight / 2, 0, this.mWaveColor, Shader.TileMode.CLAMP);
+            this.mBoxPaint.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorGreen));
+            this.mTextPaint.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorGreen));
+            this.gradient = new LinearGradient(0, this.screenHeight / 2, this.screenWidth / 3, this.screenHeight / 2, Color.TRANSPARENT, this.mWaveColor, Shader.TileMode.CLAMP);
         }
 
         private void createHeartPath() {
@@ -180,11 +180,10 @@ public class ECGWallpaperService extends WallpaperService {
             this.mCanvas.drawColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
             this.lineObject.setWaveType(this.mWaveType);
             if ((this.mCurrentStep < this.lineObject.getNumberOfSamples()) || (this.mCurrentStep == 0)) {
-                drawGraph();
                 this.mCurrentStep += 1;
-                return;
+            } else {
+                this.mCurrentStep = 0;
             }
-            this.mCurrentStep = 0;
             drawGraph();
         }
 
@@ -237,9 +236,9 @@ public class ECGWallpaperService extends WallpaperService {
             if ((System.currentTimeMillis() - this.mTime > 1000L) && (System.currentTimeMillis() - this.mTime < 1500L)) {
                 this.mCanvas.drawPath(this.mHeart, this.mBoxPaint);
                 this.mCanvas.drawText(this.mHeartRate, this.screenWidth - 100, 100.0F, this.mTextPaint);
-                if (System.currentTimeMillis() - this.mTime > 1500L)
-                    this.mTime = System.currentTimeMillis();
             }
+            if (System.currentTimeMillis() - this.mTime > 1500L)
+                this.mTime = System.currentTimeMillis();
         }
 
         private void ecg() {
@@ -270,23 +269,23 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private int getASYColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.asy_wave_color), R.color.colorPrimary);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.asy_wave_color), R.color.colorGreen);
         }
 
         private int getNSColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.ns_wave_color), R.color.colorPrimary);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.ns_wave_color), R.color.colorGreen);
         }
 
         private int getSVTColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.svt_wave_color), R.color.colorPrimary);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.svt_wave_color), R.color.colorGreen);
         }
 
         private int getVFIBColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vfib_wave_color), R.color.colorPrimary);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vfib_wave_color), R.color.colorGreen);
         }
 
         private int getVTColor() {
-            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vt_wave_color), R.color.colorPrimary);
+            return this.mPrefs.getInt(ECGWallpaperService.this.getString(R.string.vt_wave_color), R.color.colorGreen);
         }
 
         private void initLineObject() {
@@ -295,9 +294,9 @@ public class ECGWallpaperService extends WallpaperService {
             this.lineObject.setXAxisLocation(0);
             if (yScale() == 6) {
                 this.lineObject.setYAxisLocation(this.screenHeight / 2 + this.screenHeight / 10);
-                if (blurPath() <= 0)
-                    this.pathPaint.setMaskFilter(new BlurMaskFilter(blurPath(), BlurMaskFilter.Blur.NORMAL));
             }
+            if (blurPath() <= 0)
+                this.pathPaint.setMaskFilter(new BlurMaskFilter(blurPath(), BlurMaskFilter.Blur.NORMAL));
             createBoxPaint();
             createTextPaint();
             createGradient();
@@ -387,9 +386,9 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void shutdownThread() {
-            this.mScheduledExecutorService.shutdown();
-            if (!this.mScheduledExecutorService.isTerminated()) {
+            if (this.mScheduledExecutorService != null && !this.mScheduledExecutorService.isTerminated()) {
                 try {
+                    this.mScheduledExecutorService.shutdown();
                     this.mScheduledExecutorService.awaitTermination(1000L, TimeUnit.MILLISECONDS);
                     this.mScheduledExecutorService = null;
                 } catch (InterruptedException localInterruptedException) {
@@ -402,16 +401,12 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void translateGradient() {
-            double d2 = xScale() / wSpeed();
-            double d1;
-            if (d2 == 0.0D) {
-                d1 = xScale() * 1.25D / wSpeed();
-                this.mGradientMatrix.setTranslate((float) (this.lineObject.getLastPoint() - Math.round(d1) * this.screenWidth / 2L), this.screenHeight / 2);
-                this.gradient.setLocalMatrix(this.mGradientMatrix);
-                d1 = d2;
-                if (d2 == 2.0D)
-                    d1 = xScale() / (wSpeed() * 1.5D);
-            }
+            double d1 = xScale() * 1.25 / wSpeed();
+            if ((xScale() / wSpeed()) >= 2)
+                d1 = xScale() / (wSpeed() * 1.5);
+            float x = (this.lineObject.getLastPoint() - Math.round(d1)) * this.screenWidth / 2L;
+            this.mGradientMatrix.setTranslate(x, this.screenHeight / 2);
+            this.gradient.setLocalMatrix(this.mGradientMatrix);
         }
 
         private int vfibBattery() {
