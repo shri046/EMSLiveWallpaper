@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.CornerPathEffect;
 import android.graphics.LinearGradient;
+import android.graphics.MaskFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -179,16 +180,17 @@ public class ECGWallpaperService extends WallpaperService {
         private void draw() {
             this.mCanvas.drawColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
             this.lineObject.setWaveType(this.mWaveType);
-            if ((this.mCurrentStep < this.lineObject.getNumberOfSamples()) || (this.mCurrentStep == 0)) {
-                this.mCurrentStep += 1;
-            } else {
-                this.mCurrentStep = 0;
+            if (this.mCurrentStep < this.lineObject.getNumberOfSamples() || this.mCurrentStep == 0) {
+                this.drawGraph();
+                ++this.mCurrentStep;
+                return;
             }
-            drawGraph();
+            this.mCurrentStep = 0;
+            this.drawGraph();
         }
 
         private void drawBattery() {
-            this.mBatteryPaint.setShader(new LinearGradient(90.0F, 100.0F, 90.0F, 92 - this.mBatteryLevel * 26 / 100, this.mWaveColor, -16777216, Shader.TileMode.CLAMP));
+            this.mBatteryPaint.setShader(new LinearGradient(90.0F, 100.0F, 90.0F, 92 - this.mBatteryLevel * 26 / 100, this.mWaveColor, R.color.colorPrimary, Shader.TileMode.CLAMP));
             Rect localRect = new Rect(41, 99, 57, 75);
             this.mCanvas.drawRect(localRect, this.mBatteryPaint);
             this.mBatteryPaint.setShader(null);
@@ -200,59 +202,66 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void drawGraph() {
-            if (enableGrid())
-                drawGrid();
-            if (enableHeartbeat())
-                drawHeart();
-            if (enableBattery())
-                drawBattery();
-            translateGradient();
+            if (this.enableGrid()) {
+                this.drawGrid();
+            }
+            if (this.enableHeartbeat()) {
+                this.drawHeart();
+            }
+            if (this.enableBattery()) {
+                this.drawBattery();
+            }
+            this.translateGradient();
             this.fPath = this.lineObject.getPath(this.mWaveType, 0, this.mCurrentStep + 1);
-            this.pathPaint.setShader(this.gradient);
-            this.pathPaint.setStrokeWidth(strokeWidth() * 3);
+            this.pathPaint.setShader((Shader)this.gradient);
+            this.pathPaint.setStrokeWidth((float)(this.strokeWidth() * 3));
             this.mCanvas.drawPath(this.fPath, this.pathPaint);
         }
 
         private void drawGrid() {
-            int m = this.screenHeight / 10;
-            int n = this.screenHeight / 10;
-            int j = 0;
-            int i = 0;
-            while (true) {
-                if (i >= this.screenHeight / 10)
-                    return;
-                this.mCanvas.drawLine(m * i + m, 0.0F, m * i + m, this.screenHeight, this.gridPaint);
-                int k = j;
+            final int n = this.screenHeight / 10;
+            final int n2 = this.screenHeight / 10;
+            int n3 = 0;
+            int n4;
+            for (int i = 0; i < this.screenHeight / 10; ++i, n3 = n4) {
+                this.mCanvas.drawLine((float)(n * i + n), 0.0f, (float)(n * i + n), (float)this.screenHeight, this.gridPaint);
+                n4 = n3;
                 if (i > 0) {
-                    this.mCanvas.drawLine(0.0F, n * j, this.screenWidth, n * j, this.gridPaint);
-                    k = j + 1;
+                    this.mCanvas.drawLine(0.0f, (float)(n2 * n3), (float)this.screenWidth, (float)(n2 * n3), this.gridPaint);
+                    n4 = n3 + 1;
                 }
-                i += 1;
-                j = k;
             }
         }
 
         private void drawHeart() {
-            if ((System.currentTimeMillis() - this.mTime > 1000L) && (System.currentTimeMillis() - this.mTime < 1500L)) {
+            if (System.currentTimeMillis() - this.mTime > 1000L && System.currentTimeMillis() - this.mTime < 1500L) {
                 this.mCanvas.drawPath(this.mHeart, this.mBoxPaint);
-                this.mCanvas.drawText(this.mHeartRate, this.screenWidth - 100, 100.0F, this.mTextPaint);
             }
-            if (System.currentTimeMillis() - this.mTime > 1500L)
+            else if (System.currentTimeMillis() - this.mTime > 1500L) {
                 this.mTime = System.currentTimeMillis();
+            }
+            this.mCanvas.drawText(this.mHeartRate, (float)(this.screenWidth - 100), 100.0f, this.mTextPaint);
         }
 
         private void ecg() {
-            this.surfaceHolder = getSurfaceHolder();
+            this.surfaceHolder = this.getSurfaceHolder();
             this.mCanvas = null;
             try {
                 this.mCanvas = this.surfaceHolder.lockCanvas();
-                if (this.mCanvas != null)
-                    draw();
-                if (isVisible())
-                    this.mScheduledExecutorService.schedule(this.ecgProcess, 1000L / (15L * wSpeed()), TimeUnit.MILLISECONDS);
-            } finally {
-                if (this.mCanvas != null)
+                if (this.mCanvas != null) {
+                    this.draw();
+                }
+                //if (this.mCanvas != null) {
+                //    this.surfaceHolder.unlockCanvasAndPost(this.mCanvas);
+                //}
+                if (this.isVisible()) {
+                    this.mScheduledExecutorService.schedule(this.ecgProcess, 1000L / (15L * this.wSpeed()), TimeUnit.MILLISECONDS);
+                }
+            }
+            finally {
+                if (this.mCanvas != null) {
                     this.surfaceHolder.unlockCanvasAndPost(this.mCanvas);
+                }
             }
         }
 
@@ -289,22 +298,27 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void initLineObject() {
-            setScreenDimensions();
-            this.lineObject = new LineObjects(xScale(), yScale(), this.screenWidth);
-            this.lineObject.setXAxisLocation(0);
-            if (yScale() == 6) {
+            this.setScreenDimensions();
+            (this.lineObject = new LineObjects(this.xScale(), this.yScale(), this.screenWidth)).setXAxisLocation(0);
+            if (this.yScale() == 6) {
                 this.lineObject.setYAxisLocation(this.screenHeight / 2 + this.screenHeight / 10);
             }
-            if (blurPath() <= 0)
-                this.pathPaint.setMaskFilter(new BlurMaskFilter(blurPath(), BlurMaskFilter.Blur.NORMAL));
-            createBoxPaint();
-            createTextPaint();
-            createGradient();
-            if (enableHeartbeat())
-                createHeartPath();
-            createBatteryPath();
-            this.lineObject.setYAxisLocation(this.screenHeight / 2);
-            this.pathPaint.setMaskFilter(null);
+            else {
+                this.lineObject.setYAxisLocation(this.screenHeight / 2);
+            }
+            if (this.blurPath() > 0) {
+                this.pathPaint.setMaskFilter((MaskFilter)new BlurMaskFilter((float)this.blurPath(), BlurMaskFilter.Blur.NORMAL));
+            }
+            else {
+                this.pathPaint.setMaskFilter((MaskFilter)null);
+            }
+            this.createBoxPaint();
+            this.createTextPaint();
+            this.createGradient();
+            if (this.enableHeartbeat()) {
+                this.createHeartPath();
+            }
+            this.createBatteryPath();
         }
 
         private void registerBatteryMonitor() {

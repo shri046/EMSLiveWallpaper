@@ -1,80 +1,82 @@
+// 
+// Decompiled by Procyon v0.5.30
+// 
+
 package com.androidrec.wallpaper.live.utils;
 
-import android.graphics.Path;
-
-import com.androidrec.wallpaper.live.constants.WaveType;
-import com.androidrec.wallpaper.live.waveforms.ECGAsystole;
-import com.androidrec.wallpaper.live.waveforms.ECGNormalSinus;
-import com.androidrec.wallpaper.live.waveforms.ECGSuperVentricularTachycardia;
+import com.androidrec.wallpaper.live.waveforms.ECGVentricularTachycardia;
 import com.androidrec.wallpaper.live.waveforms.ECGVentricularFibrillation;
-import com.androidrec.wallpaper.live.waveforms.ECGWave;
-
+import com.androidrec.wallpaper.live.waveforms.ECGSuperVentricularTachycardia;
+import com.androidrec.wallpaper.live.waveforms.ECGNormalSinus;
+import com.androidrec.wallpaper.live.waveforms.ECGAsystole;
 import java.util.ArrayList;
 import java.util.List;
+import android.graphics.Path;
+import com.androidrec.wallpaper.live.constants.WaveType;
 
-public class LineObjects {
+public class LineObjects
+{
     private int lastPoint;
     private final int mScreenWidth;
     private WaveType mWaveType;
     private final int mXScale;
     private final int mYScale;
     private int numSamples;
-    private final Path path = new Path();
-    private List<Integer> waveformX = new ArrayList<Integer>();
-    private List<Integer> waveformY = new ArrayList<Integer>();
-    private int xAxisLocation = 0;
-    private final int xOffset = 0;
-    private int yAxisLocation = 300;
-    private ECGWave wave;
+    private final Path path;
+    private List<Integer> waveformX;
+    private List<Integer> waveformY;
+    private int xAxisLocation;
+    private final int xOffset;
+    private int yAxisLocation;
 
-    public LineObjects(int paramInt1, int paramInt2, int paramInt3) {
-        this.mXScale = paramInt1;
-        this.mYScale = paramInt2;
-        this.mScreenWidth = paramInt3;
+    public LineObjects(final int mxScale, final int myScale, final int mScreenWidth) {
+        this.xAxisLocation = 0;
+        this.yAxisLocation = 300;
+        this.xOffset = 0;
+        this.waveformX = new ArrayList<Integer>();
+        this.waveformY = new ArrayList<Integer>();
+        this.path = new Path();
+        this.mXScale = mxScale;
+        this.mYScale = myScale;
+        this.mScreenWidth = mScreenWidth;
     }
 
     private void getASYECG() {
         if (!WaveType.ASYSTOLE.equals(this.mWaveType)) {
-            this.wave = new ECGAsystole();
-            this.getCoordinates();
+            this.waveformX = ECGAsystole.getX(new ArrayList<Integer>(), this.numCycles(116), this.mXScale);
+            this.waveformY = ECGAsystole.getY(new ArrayList<Integer>(), this.numCycles(116), this.mYScale);
             this.mWaveType = WaveType.ASYSTOLE;
         }
     }
 
-    private void getCoordinates() {
-        this.waveformX = this.wave.getX(numCycles(this.wave.getMax()), this.mXScale);
-        this.waveformY = this.wave.getY(numCycles(this.wave.getMax()), this.mYScale);
-        this.numSamples = numCycles(this.waveformX.size()) * this.waveformX.size();
-    }
-
     private void getNormalECG() {
         if (!WaveType.NORMAL_SINUS.equals(this.mWaveType)) {
-            this.wave = new ECGNormalSinus();
-            this.getCoordinates();
+            this.waveformX = ECGNormalSinus.getX(new ArrayList<Integer>(), this.numCycles(96), this.mXScale);
+            this.waveformY = ECGNormalSinus.getY(new ArrayList<Integer>(), this.numCycles(96), this.mYScale);
             this.mWaveType = WaveType.NORMAL_SINUS;
         }
     }
 
     private void getSVTECG() {
         if (!WaveType.SVT.equals(this.mWaveType)) {
-            this.wave = new ECGSuperVentricularTachycardia();
-            this.getCoordinates();
+            this.waveformX = ECGSuperVentricularTachycardia.getX(new ArrayList<Integer>(), this.numCycles(54), this.mXScale);
+            this.waveformY = ECGSuperVentricularTachycardia.getY(new ArrayList<Integer>(), this.numCycles(54), this.mYScale);
             this.mWaveType = WaveType.SVT;
         }
     }
 
     private void getVFIBECG() {
         if (!WaveType.VFIB.equals(this.mWaveType)) {
-            this.wave = new ECGVentricularFibrillation();
-            this.getCoordinates();
+            this.waveformX = ECGVentricularFibrillation.getX(new ArrayList<Integer>(), this.numCycles(116), this.mXScale);
+            this.waveformY = ECGVentricularFibrillation.getY(new ArrayList<Integer>(), this.numCycles(116), this.mYScale);
             this.mWaveType = WaveType.VFIB;
         }
     }
 
     private void getVTECG() {
         if (!WaveType.VTACH.equals(this.mWaveType)) {
-            this.wave = new ECGSuperVentricularTachycardia();
-            this.getCoordinates();
+            this.waveformX = ECGVentricularTachycardia.getX(new ArrayList<Integer>(), this.numCycles(78), this.mXScale);
+            this.waveformY = ECGVentricularTachycardia.getY(new ArrayList<Integer>(), this.numCycles(78), this.mYScale);
             this.mWaveType = WaveType.VTACH;
         }
     }
@@ -104,10 +106,11 @@ public class LineObjects {
         return this.path;
     }
 
-    private int numCycles(int paramInt) {
-        if (this.mXScale > 0)
-            return (int) Math.ceil(this.mScreenWidth / (this.mXScale * paramInt));
-        return (int) Math.ceil(this.mScreenWidth / paramInt);
+    private int numCycles(final int n) {
+        if (this.mXScale > 0) {
+            return (int)Math.ceil(this.mScreenWidth / (this.mXScale * n));
+        }
+        return (int)Math.ceil(this.mScreenWidth / n);
     }
 
     public int getLastPoint() {
@@ -118,17 +121,21 @@ public class LineObjects {
         return this.numSamples;
     }
 
-    public Path getPath(WaveType paramWaveType, int paramInt1, int paramInt2) {
+    public Path getPath(final WaveType waveType, final int n, final int n2) {
         this.path.reset();
-        if (WaveType.VTACH.equals(paramWaveType))
-            return getWaveformPath(paramInt1, paramInt2);
-        if (WaveType.SVT.equals(paramWaveType))
-            return getWaveformPath(paramInt1, paramInt2);
-        if (WaveType.VFIB.equals(paramWaveType))
-            return getWaveformPath(paramInt1, paramInt2);
-        if (WaveType.ASYSTOLE.equals(paramWaveType))
-            return getWaveformPath(paramInt1, paramInt2);
-        return getWaveformPath(paramInt1, paramInt2);
+        if (WaveType.VTACH.equals(waveType)) {
+            return this.getWaveformPath(n, n2);
+        }
+        if (WaveType.SVT.equals(waveType)) {
+            return this.getWaveformPath(n, n2);
+        }
+        if (WaveType.VFIB.equals(waveType)) {
+            return this.getWaveformPath(n, n2);
+        }
+        if (WaveType.ASYSTOLE.equals(waveType)) {
+            return this.getWaveformPath(n, n2);
+        }
+        return this.getWaveformPath(n, n2);
     }
 
     public void reset() {
@@ -136,31 +143,31 @@ public class LineObjects {
         this.waveformY = null;
     }
 
-    public void setWaveType(WaveType paramWaveType) {
-        if (WaveType.ASYSTOLE.equals(paramWaveType)) {
-            getASYECG();
+    public void setWaveType(final WaveType waveType) {
+        if (WaveType.ASYSTOLE.equals(waveType)) {
+            this.getASYECG();
             return;
         }
-        if (WaveType.VFIB.equals(paramWaveType)) {
-            getVFIBECG();
+        if (WaveType.VFIB.equals(waveType)) {
+            this.getVFIBECG();
             return;
         }
-        if (WaveType.VTACH.equals(paramWaveType)) {
-            getVTECG();
+        if (WaveType.VTACH.equals(waveType)) {
+            this.getVTECG();
             return;
         }
-        if (WaveType.SVT.equals(paramWaveType)) {
-            getSVTECG();
+        if (WaveType.SVT.equals(waveType)) {
+            this.getSVTECG();
             return;
         }
-        getNormalECG();
+        this.getNormalECG();
     }
 
-    public void setXAxisLocation(int paramInt) {
-        this.xAxisLocation = paramInt;
+    public void setXAxisLocation(final int xAxisLocation) {
+        this.xAxisLocation = xAxisLocation;
     }
 
-    public void setYAxisLocation(int paramInt) {
-        this.yAxisLocation = paramInt;
+    public void setYAxisLocation(final int yAxisLocation) {
+        this.yAxisLocation = yAxisLocation;
     }
 }

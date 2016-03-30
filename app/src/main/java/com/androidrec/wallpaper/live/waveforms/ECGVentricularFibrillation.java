@@ -1,24 +1,72 @@
+// 
+// Decompiled by Procyon v0.5.30
+// 
+
 package com.androidrec.wallpaper.live.waveforms;
 
-public class ECGVentricularFibrillation extends ECGWave {
+import java.util.List;
+
+public class ECGVentricularFibrillation
+{
     public static final int MAX = 116;
-
-    private static final int[] X_COORDS = {0, 4, 6, 12, 18, 24, 30, 38, 40, 48, 54, 62, 72, 82, 86, 94, 96, 100, 104, 108, 116};
-
-    private static final int[] Y_COORDS = {0, -32, -52, -52, -18, 14, 24, -22, -56, -58, -42, 18, 20, -32, -48, -46, -34, 0, 36, 44, 0};
-
-    @Override
-    public int[] getXCoordinates() {
-        return X_COORDS;
+    
+    public static List<Integer> getX(final List<Integer> list, final int n, final int n2) {
+        int intValue = 0;
+        for (int i = 1; i <= n + 1; ++i) {
+            int n3 = 0;
+            if (i > 1) {
+                n3 = 0 + intValue;
+            }
+            list.add(n2 * 0 + n3);
+            list.add(n2 * 4 + n3);
+            list.add(n2 * 6 + n3);
+            list.add(n2 * 12 + n3);
+            list.add(n2 * 18 + n3);
+            list.add(n2 * 24 + n3);
+            list.add(n2 * 30 + n3);
+            list.add(n2 * 38 + n3);
+            list.add(n2 * 40 + n3);
+            list.add(n2 * 48 + n3);
+            list.add(n2 * 54 + n3);
+            list.add(n2 * 62 + n3);
+            list.add(n2 * 72 + n3);
+            list.add(n2 * 82 + n3);
+            list.add(n2 * 86 + n3);
+            list.add(n2 * 94 + n3);
+            list.add(n2 * 96 + n3);
+            list.add(n2 * 100 + n3);
+            list.add(n2 * 104 + n3);
+            list.add(n2 * 108 + n3);
+            list.add(n2 * 116 + n3);
+            intValue = list.get(list.size() - 1);
+        }
+        return list;
     }
-
-    @Override
-    public int[] getYCoordinates() {
-        return Y_COORDS;
-    }
-
-    @Override
-    public int getMax() {
-        return MAX;
+    
+    public static List<Integer> getY(final List<Integer> list, final int n, final int n2) {
+        for (int i = 1; i <= n + 1; ++i) {
+            list.add(n2 * 0);
+            list.add(n2 * -32);
+            list.add(n2 * -52);
+            list.add(n2 * -52);
+            list.add(n2 * -18);
+            list.add(n2 * 14);
+            list.add(n2 * 24);
+            list.add(n2 * -22);
+            list.add(n2 * -56);
+            list.add(n2 * -58);
+            list.add(n2 * -42);
+            list.add(n2 * 18);
+            list.add(n2 * 20);
+            list.add(n2 * -32);
+            list.add(n2 * -48);
+            list.add(n2 * -46);
+            list.add(n2 * -34);
+            list.add(n2 * 0);
+            list.add(n2 * 36);
+            list.add(n2 * 44);
+            list.add(n2 * 0);
+        }
+        return list;
     }
 }
