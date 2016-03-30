@@ -79,29 +79,28 @@ public class LineObjects {
         }
     }
 
-    private Path getWaveformPath(int paramInt1, int paramInt2) {
-        if (paramInt1 == 0) {
-            this.path.moveTo(this.xAxisLocation, this.yAxisLocation);
+    private Path getWaveformPath(int i, final int n) {
+        if (i == 0) {
+            this.path.moveTo((float)this.xAxisLocation, (float)this.yAxisLocation);
         }
-
-        if (paramInt2 == 0) {
-            this.lastPoint = this.xAxisLocation;
-        } else {
-            this.lastPoint = paramInt2;
+        else {
+            this.path.moveTo((float)(this.waveformX.get(i) + this.xAxisLocation + 0), (float)(this.waveformY.get(i) + this.yAxisLocation));
         }
-
-        this.numSamples = numCycles(this.waveformX.size()) * this.waveformX.size();
-        float f1 = this.waveformX.get(paramInt1) + this.xAxisLocation;
-        float f2 = this.waveformY.get(paramInt1) + this.yAxisLocation;
-        this.path.moveTo(f1, f2);
-
-        for(int i = 0; i < numCycles(this.waveformX.size()) * this.waveformX.size(); i++) {
+        while (i < n) {
             try {
-                this.path.lineTo(this.waveformX.get(i) + this.xAxisLocation, this.waveformY.get(i) + this.yAxisLocation);
-            } catch (Exception localException) {
+                final int lastPoint = this.waveformX.get(i) + this.xAxisLocation + 0;
+                this.path.lineTo((float)lastPoint, (float)(this.waveformY.get(i) + this.yAxisLocation));
+                this.lastPoint = lastPoint;
+                ++i;
+            }
+            catch (Exception ex) {
+                break;
             }
         }
-
+        if (n == 0) {
+            this.lastPoint = this.xAxisLocation;
+        }
+        this.numSamples = this.waveformX.size();
         return this.path;
     }
 

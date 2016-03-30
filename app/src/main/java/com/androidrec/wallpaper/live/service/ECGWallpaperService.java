@@ -401,11 +401,18 @@ public class ECGWallpaperService extends WallpaperService {
         }
 
         private void translateGradient() {
-            double d1 = xScale() * 1.25 / wSpeed();
-            if ((xScale() / wSpeed()) >= 2)
-                d1 = xScale() / (wSpeed() * 1.5);
-            float x = (this.lineObject.getLastPoint() - Math.round(d1)) * this.screenWidth / 2L;
-            this.mGradientMatrix.setTranslate(x, this.screenHeight / 2);
+            final double n = this.xScale() / this.wSpeed();
+            double n2;
+            if (n == 0.0) {
+                n2 = this.xScale() * 1.25 / this.wSpeed();
+            }
+            else {
+                n2 = n;
+                if (n == 2.0) {
+                    n2 = this.xScale() / (this.wSpeed() * 1.5);
+                }
+            }
+            this.mGradientMatrix.setTranslate((float)(this.lineObject.getLastPoint() - Math.round(n2) * this.screenWidth / 2L), (float)(this.screenHeight / 2));
             this.gradient.setLocalMatrix(this.mGradientMatrix);
         }
 
